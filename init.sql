@@ -4,7 +4,6 @@ CREATE SCHEMA `what_my_gpa_db` ;
 
 CREATE TABLE `what_my_gpa_db`.`courses` (
   `code` varchar(45) NOT NULL,
-  `description` varchar(255) NOT NULL,
   `credits` int(11) NOT NULL,
   PRIMARY KEY (`code`),
   UNIQUE KEY `code_UNIQUE` (`code`)
