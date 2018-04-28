@@ -21,6 +21,34 @@ public class CoursesService {
 		return getQueryResults(query);
 	}
 
+	public static Courses getCourse(String courseCode) {
+		TypedQuery<Courses> query = em.createNamedQuery("Courses.findOne", Courses.class);
+		query.setParameter("code", courseCode);
+		List<Courses> result = getQueryResults(query);
+		if (result == null) {
+			return null;
+		}
+		return result.get(0);
+	}
+
+	public static void addCourse(String courseCode, int credits) {
+		Courses newCourse = new Courses();
+		newCourse.setCode(courseCode);
+		newCourse.setCredits(credits);
+		et.begin();
+		em.persist(newCourse);
+		et.commit();
+	}
+
+	public static boolean removeOneCourse(String courseCode) {
+		TypedQuery<Courses> query = em.createNamedQuery("Courses.removeOne", Courses.class);
+		et.begin();
+		int deletedCount = query.setParameter("code", courseCode).executeUpdate();
+		em.flush();
+		et.commit();
+		return deletedCount > 0;
+	}
+
 	// Helper functions
 	private static List<Courses> getQueryResults(TypedQuery<Courses> query) {
 		List<Courses> courseList = query.getResultList();

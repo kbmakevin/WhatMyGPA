@@ -1,10 +1,21 @@
 <%@ include file="./partials/header.jsp"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
 <div class="container wrapper" style="margin-top: 65px">
 	<div class="row">
 		<h1 class="display-4">Courses List</h1>
+	</div>
+
+	${requestScope.resultMessage}
+
+
+	<div class="row">
+		<form action="Courses" method="post">
+			<input type="submit" class="btn btn-success" name="showAddCourseForm"
+				value="Add Course" />
+		</form>
 	</div>
 
 	<div class="row">
@@ -22,23 +33,29 @@
 						<tr>
 							<th scope="col">Course Code</th>
 							<th scope="col">Credits</th>
-							<th scope="col"></th>
+							<th scope="col">Number of Students</th>
 							<th scope="col"></th>
 						</tr>
 					</thead>
 					<tbody>
-						<tr>
-							<c:forEach items="${sessionScope.courses}" var="course"
-								varStatus="counter">
-								<form action="Courses" method="post">
-									<td scope="row">${course.code}</td>
+						<c:forEach items="${sessionScope.courses}" var="course"
+							varStatus="counter">
+							<form action="Courses" method="post">
+								<input type="hidden" id="courseCode" name="courseCode"
+									value="${course.code}" />
+							<tr>
+								<td scope="row">${fn:toUpperCase(course.code)}</td>
 								<td scope="row">${course.credits}</td>
-								<td><input type="submit" class="btn btn-primary pull-right"
-									value="Add To Cart" style="font-size: 10px;"
-									id="addToCart${counter.count}" disabled /></td>
-								</form>
-							</c:forEach>
-						</tr>
+								<td scope="row">${course.users.size()}</td>
+								<td><input type="submit" class="btn btn-info"
+									name="showUpdateCourseForm" value="Update" /> <input
+									type="submit" class="btn btn-danger" name="removeCourse"
+									value="Remove"
+									<c:if test="${course.users.size() gt 0}">
+										disabled="true"</c:if> /></td>
+							</tr>
+							</form>
+						</c:forEach>
 					</tbody>
 				</table>
 			</c:otherwise>

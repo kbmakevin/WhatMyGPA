@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
@@ -17,7 +18,9 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "courses")
-@NamedQuery(name = "Courses.findAll", query = "SELECT c FROM Courses c")
+@NamedQueries({ @NamedQuery(name = "Courses.findAll", query = "SELECT c FROM Courses c"),
+		@NamedQuery(name = "Courses.findOne", query = "SELECT c FROM Courses c WHERE c.code = :code"),
+		@NamedQuery(name = "Courses.removeOne", query = "DELETE FROM Courses c WHERE c.code = :code") })
 public class Courses implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private String code;

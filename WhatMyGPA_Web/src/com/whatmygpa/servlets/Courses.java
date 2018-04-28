@@ -25,13 +25,10 @@ public class Courses extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+
 		HttpSession session = request.getSession();
 		List<com.whatmygpa.models.Courses> coursesQueryResults = CoursesService.getAllCourses();
-
-		// only load for the first time; don't query db if unneeded
-		if (session.getAttribute("courses") == null) {
-			session.setAttribute("courses", coursesQueryResults);
-		}
+		session.setAttribute("courses", coursesQueryResults);
 		request.getRequestDispatcher("courses_list.jsp").forward(request, response);
 	}
 
@@ -41,24 +38,70 @@ public class Courses extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
+
+		if (request.getParameter("showAddCourseForm") != null) {
+
+			// show add course form
+			request.setAttribute("operationHeader", "Add");
+			request.getRequestDispatcher("courses_form.jsp").forward(request, response);
+
+		} else if (request.getParameter("showUpdateCourseForm") != null) {
+
+			// show update course form
+			request.setAttribute("operationHeader", "Update");
+			request.getRequestDispatcher("courses_form.jsp").forward(request, response);
+
+		} else if (request.getParameter("removeCourse") != null) {
+
+			// delete a course
+			deleteCourse(request, response);
+
+		} else if (request.getParameter("updateCourse") != null) {
+
+			updateCourse(request, response);
+
+		} else if (request.getParameter("addCourse") != null) {
+
+			addCourse(request, response);
+
+		}
+	}
+
+	protected void addCourse(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
+		String courseCode = request.getParameter("code").toUpperCase();
+		int credits = Integer.parseInt(request.getParameter("credits"));
+
+		if (CoursesService.getCourse(courseCode) == null) {
+			CoursesService.addCourse(courseCode, credits);
+			request.setAttribute("resultMessage", "Course: " + courseCode + " has been added.");
+		} else {
+			request.setAttribute("resultMessage", "Course: " + courseCode + " already exists!");
+		}
+		// re-populate table with updated data
 		doGet(request, response);
 	}
 
-	/**
-	 * @see HttpServlet#doPut(HttpServletRequest, HttpServletResponse)
-	 */
-	protected void doPut(HttpServletRequest request, HttpServletResponse response)
+	protected void updateCourse(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
+
+		request.setAttribute("resultMessage", "Updated");
+		request.getRequestDispatcher("courses_list.jsp").forward(request, response);
 	}
 
-	/**
-	 * @see HttpServlet#doDelete(HttpServletRequest, HttpServletResponse)
-	 */
-	protected void doDelete(HttpServletRequest request, HttpServletResponse response)
+	protected void deleteCourse(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
+
+		String courseCode = request.getParameter("courseCode").toUpperCase();
+		if (CoursesService.removeOneCourse(courseCode)) {
+			request.setAttribute("resultMessage", "Course: " + courseCode + " has been deleted.");
+		} else {
+			request.setAttribute("resultMessage", "Failed to delete Course: " + courseCode + ".");
+		}
+
+		// re-populate table with updated data
+		doGet(request, response);
 	}
 
 }
