@@ -16,7 +16,8 @@ CREATE TABLE `what_my_gpa_db`.`users` (
   `username` varchar(45) NOT NULL,
   `password` varchar(45) NOT NULL,
   `gpa` double DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `username_UNIQUE` (`username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `what_my_gpa_db`.`course_enrollments` (
