@@ -19,7 +19,9 @@
 
 	<div class="row">
 		<c:choose>
-			<c:when test="${sessionScope.user.courseEnrollments.size() eq 0}">
+			<c:when
+				test="${sessionScope.transcriptCourseEnrollments.size() eq 0}">
+				<%-- 			<c:when test="${sessionScope.user.courseEnrollments.size() eq 0}"> --%>
 				<p>
 					You currently have no courses on your transcript...<br> Please
 					add a course by click on the <span class='text-success'>Add
@@ -53,6 +55,8 @@
 									<td scope="row">${courseEnrollment.course.credits}</td>
 									<%-- 									<td scope="row">${(course.courseEnrollments).id}</td> --%>
 									<td scope="row">${courseEnrollment.gradeReceived}%</td>
+									<td scope="row">${courseEnrollment.earnedGPA}</td>
+
 									<td><input type="submit" class="btn btn-info"
 										name="showUpdateCourseForm" value="Update" /> <input
 										type="submit" class="btn btn-danger" name="removeCourse"
@@ -64,6 +68,11 @@
 						</c:forEach>
 					</tbody>
 				</table>
+
+				<!-- user's overall GPA displayed here -->
+				<div class='row'>
+					<h4>Overall GPA: ${sessionScope.overallGpa}</h4>
+				</div>
 			</c:otherwise>
 		</c:choose>
 	</div>

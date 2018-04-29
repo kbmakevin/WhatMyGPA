@@ -35,6 +35,75 @@ public class CourseEnrollmentServices {
 		return query.getSingleResult();
 	}
 
+	private static double calculateEarnedGrade(int credits, int grade) {
+		return getScale(grade) * credits;
+	}
+
+	public static double calculateOverallGPA(Users user) {
+		// public static void calculateOverallGPA(Users user) {
+
+		TypedQuery<CourseEnrollment> query = em.createNamedQuery("CourseEnrollment.findByUser", CourseEnrollment.class);
+		query.setParameter("user", user);
+
+		List<CourseEnrollment> ce = query.getResultList();
+
+		// sum all earnedGpa for course enrollments with this user.id
+		double sumEarnedGpa = 0;
+
+		// sum all credits for course enrollments.course with this user.id
+		int sumCredits = 0;
+
+		for (CourseEnrollment courseEnrollment : ce) {
+			sumEarnedGpa += courseEnrollment.getEarnedGPA();
+			sumCredits += courseEnrollment.getCourse().getCredits();
+		}
+
+		System.out.println("sumearnedgpa " + sumEarnedGpa);
+		System.out.println("sumCredits " + sumCredits);
+
+		// divide 1/2 = overallgpa
+		double overallGpa = sumEarnedGpa / sumCredits;
+
+		System.out.println("overallGpa " + overallGpa);
+
+		return overallGpa;
+
+		// try {
+		// et.begin();
+		// Users updatedUser = user;
+		// updatedUser.setGpa(overallGpa);
+		// // updatedCourse.setCredits(credits);
+		// em.persist(updatedUser);
+		// // automatic rollback on SQL Exception
+		// et.commit();
+		// } catch (RollbackException re) {
+		// re.printStackTrace(System.err);
+		// }
+
+		// et.begin();
+		// try {
+		//
+		// // update user overall gpa
+		// // user.setGpa(calculateOverallGPA(user));
+		//
+		// Query query2 = em.createQuery("UPDATE users u SET gpa = " + overallGpa +
+		// "WHERE u.id = :id");
+		// query2.setParameter("id", user.getId());
+		// query2.executeUpdate();
+		//
+		// // persist course enrollment
+		// // em.persist(user);
+		//
+		// // update user overall gpa - this will become virtual field, not stored in
+		// user
+		// // table
+		// // em.flush();
+		// et.commit();
+		// } catch (Exception e) {
+		// et.rollback();
+		// }
+	}
+
 	public static void addCourseEnrollment(Users user, Courses course, int gradeReceived) {
 
 		et.begin();
@@ -58,13 +127,24 @@ public class CourseEnrollmentServices {
 			pk.setCourseId(course.getCode());
 			pk.setUserId(user.getId());
 			enrollment.setId(pk);
+			enrollment.setEarnedGPA(calculateEarnedGrade(course.getCredits(), gradeReceived));
+
+			em.persist(enrollment);
+
+			// update user overall gpa
+			// user.setGpa(calculateOverallGPA(user));
+
+			// Query query = em.createQuery("UPDATE users u SET gpa = " +
+			// calculateOverallGPA(user) + "WHERE u.id = :id");
+			// query.setParameter("id", user.getId());
+			// query.executeUpdate();
 
 			// persist course enrollment
-			em.persist(enrollment);
+			// em.persist(user);
 
 			// update user overall gpa - this will become virtual field, not stored in user
 			// table
-			em.flush();
+			// em.flush();
 			et.commit();
 		} catch (Exception e) {
 			et.rollback();
@@ -89,14 +169,15 @@ public class CourseEnrollmentServices {
 		et.begin();
 
 		ce.setGradeReceived(gradeReceived);
+		ce.setEarnedGPA(calculateEarnedGrade(ce.getCourse().getCredits(), gradeReceived));
 		em.persist(ce);
 
 		et.commit();
 	}
 
-	private static double getScale(double percentage) {
+	private static double getScale(int percentage) {
 		// A+ 90-100
-		if (percentage > 90)
+		if (percentage >= 90)
 			return 4.5;
 		// A 80-89
 		if (percentage >= 80)

@@ -37,8 +37,14 @@ public class TranscriptServlet extends HttpServlet {
 		for (CourseEnrollment courseEnrollment : CourseEnrollmentServices
 				.getAllCourseEnrollmentsWithUser((Users) request.getSession().getAttribute("user"))) {
 			// transcriptCourses.add(courseEnrollment.getCourse());
+			// courseEnrollment.earnedGPA = CourseEnrollmentServices.calculateEarnedGrade(
+			// courseEnrollment.getCourse().getCredits(),
+			// courseEnrollment.getGradeReceived());
 			transcriptCourseEnrollments.add(courseEnrollment);
 		}
+		request.getSession().setAttribute("overallGpa",
+				CourseEnrollmentServices.calculateOverallGPA((Users) request.getSession().getAttribute("user")));
+
 		request.getSession().setAttribute("transcriptCourseEnrollments", transcriptCourseEnrollments);
 		// request.getSession().setAttribute("transcriptCourses", transcriptCourses);
 
@@ -76,6 +82,7 @@ public class TranscriptServlet extends HttpServlet {
 					transcriptCourseEnrollments.add(c);
 				}
 			}
+
 			request.setAttribute("allCourses", transcriptCourseEnrollments);
 
 			request.setAttribute("operationHeader", "Add");
@@ -121,6 +128,10 @@ public class TranscriptServlet extends HttpServlet {
 		} else {
 			request.setAttribute("resultMessage", "Failed to delete Course: " + courseCode + ".");
 		}
+
+		request.getSession().setAttribute("overallGpa",
+				CourseEnrollmentServices.calculateOverallGPA((Users) request.getSession().getAttribute("user")));
+
 		// re-populate table with updated data
 		doGet(request, response);
 	}
@@ -133,6 +144,10 @@ public class TranscriptServlet extends HttpServlet {
 		CourseEnrollment ce = CourseEnrollmentServices.getOneCourseEnrollment(
 				(Users) request.getSession().getAttribute("user"), CoursesService.getCourse(courseCode));
 		CourseEnrollmentServices.updateCourseEnrollment(ce, gradeReceived);
+
+		request.getSession().setAttribute("overallGpa",
+				CourseEnrollmentServices.calculateOverallGPA((Users) request.getSession().getAttribute("user")));
+
 		// re-populate table with updated data
 		doGet(request, response);
 	}
@@ -145,6 +160,9 @@ public class TranscriptServlet extends HttpServlet {
 
 		CourseEnrollmentServices.addCourseEnrollment((Users) request.getSession().getAttribute("user"),
 				CoursesService.getCourse(courseCode), gradeReceived);
+
+		request.getSession().setAttribute("overallGpa",
+				CourseEnrollmentServices.calculateOverallGPA((Users) request.getSession().getAttribute("user")));
 
 		request.setAttribute("resultMessage", "Course: " + courseCode + " has been added.");
 

@@ -49,7 +49,20 @@ public class UsersService {
 		}
 	}
 
-	public static void updateOverallGPA(Users user) {
+	public static void updateOverallGPA(Users user, double gpa) {
+
+		et.begin();
+		try {
+			user.setGpa(gpa);
+			em.persist(user);
+			em.flush();
+			et.commit();
+		} catch (Exception e) {
+			System.out.println("catching in usersservice");
+			et.rollback();
+			throw new PersistenceException();
+		}
+
 		// get sum of credits
 		// double creditsSum;
 

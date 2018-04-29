@@ -17,9 +17,10 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "course_enrollments")
 
-@NamedQueries({ @NamedQuery(name = "CourseEnrollment.findAll", query = "SELECT c FROM CourseEnrollment c"),
+@NamedQueries({ @NamedQuery(name = "CourseEnrollment.findEvery", query = "SELECT c FROM CourseEnrollment c"),
 		@NamedQuery(name = "CourseEnrollment.findAllForUser", query = "SELECT c FROM CourseEnrollment c WHERE c.user = :user"),
 		@NamedQuery(name = "CourseEnrollment.findSpecific", query = "SELECT c FROM CourseEnrollment c WHERE c.user = :user AND c.course = :course"),
+		@NamedQuery(name = "CourseEnrollment.findByUser", query = "SELECT c FROM CourseEnrollment c WHERE c.user = :user"),
 		@NamedQuery(name = "CourseEnrollment.removeOne", query = "DELETE FROM CourseEnrollment c WHERE c.user = :user AND c.course = :course") })
 public class CourseEnrollment implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -27,6 +28,7 @@ public class CourseEnrollment implements Serializable {
 	private int gradeReceived;
 	private Users user;
 	private Courses course;
+	private double earnedGPA;
 
 	public CourseEnrollment() {
 	}
@@ -46,6 +48,14 @@ public class CourseEnrollment implements Serializable {
 
 	public void setGradeReceived(int gradeReceived) {
 		this.gradeReceived = gradeReceived;
+	}
+
+	public double getEarnedGPA() {
+		return this.earnedGPA;
+	}
+
+	public void setEarnedGPA(double earnedGPA) {
+		this.earnedGPA = earnedGPA;
 	}
 
 	// bi-directional many-to-one association to User
