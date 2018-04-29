@@ -49,4 +49,16 @@ public class UsersService {
 		}
 	}
 
+	public static void updateOverallGPA(Users user) {
+		// get sum of credits
+		// double creditsSum;
+
+		// get sum of earnedGPA (scale * credits)
+
+		// calculate overall gpa = sum of earnedGPA/sum of credits
+
+		// persist user
+
+	}
+
 }

@@ -6,6 +6,7 @@ import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
@@ -15,11 +16,13 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "course_enrollments")
-@NamedQuery(name = "CourseEnrollment.findAll", query = "SELECT c FROM CourseEnrollment c")
+
+@NamedQueries({ @NamedQuery(name = "CourseEnrollment.findAll", query = "SELECT c FROM CourseEnrollment c"),
+		@NamedQuery(name = "CourseEnrollment.findSpecific", query = "SELECT c FROM CourseEnrollment c WHERE c.user = :user") })
 public class CourseEnrollment implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private CourseEnrollmentPK id;
-	private double earnedGPA;
+	private int gradeReceived;
 	private Users user;
 	private Courses course;
 
@@ -35,12 +38,12 @@ public class CourseEnrollment implements Serializable {
 		this.id = id;
 	}
 
-	public double getEarnedGPA() {
-		return this.earnedGPA;
+	public int getGradeReceived() {
+		return this.gradeReceived;
 	}
 
-	public void setEarnedGPA(double earnedGPA) {
-		this.earnedGPA = earnedGPA;
+	public void setGradeReceived(int gradeReceived) {
+		this.gradeReceived = gradeReceived;
 	}
 
 	// bi-directional many-to-one association to User
@@ -64,5 +67,4 @@ public class CourseEnrollment implements Serializable {
 	public void setCourse(Courses course) {
 		this.course = course;
 	}
-
 }

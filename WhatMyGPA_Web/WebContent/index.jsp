@@ -19,6 +19,19 @@
 		<div class='row'>
 			<h2>Welcome, ${sessionScope.user.name}!</h2>
 		</div>
+		<div class='row'>
+			<h4>
+				<c:if test="${sessionScope.user.gpa gt 0}">
+			Overall GPA: ${sessionScope.user.gpa }			
+			</c:if>
+				<c:if test="${sessionScope.user.gpa eq 0}">
+					You need to go to Transcript and add your courses to see your GPA!
+				</c:if>
+			</h4>
+		</div>
+		<div class='row'>
+			<a class="btn btn-outline-info" href="Transcript">View Transcript</a>
+		</div>
 	</c:if>
 
 	<!-- if admin -->
@@ -28,7 +41,8 @@
 			<h2>Summary</h2>
 		</div>
 		<div class='row'>
-			# Courses: ${requestScope.numberOfCourses } <br> # Students:
+			# Courses Added to this Application: ${requestScope.numberOfCourses }
+			<br> # Students Registered with this Application:
 			${requestScope.numberOfUsers }
 		</div>
 		<br>

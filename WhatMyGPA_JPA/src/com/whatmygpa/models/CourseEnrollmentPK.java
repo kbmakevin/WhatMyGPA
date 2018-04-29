@@ -11,17 +11,17 @@ import javax.persistence.*;
 public class CourseEnrollmentPK implements Serializable {
 	//default serial version id, required for serializable classes.
 	private static final long serialVersionUID = 1L;
-	private int courseId;
+	private String courseId;
 	private int userId;
 
 	public CourseEnrollmentPK() {
 	}
 
 	@Column(name="course_id")
-	public int getCourseId() {
+	public String getCourseId() {
 		return this.courseId;
 	}
-	public void setCourseId(int courseId) {
+	public void setCourseId(String courseId) {
 		this.courseId = courseId;
 	}
 
@@ -42,14 +42,14 @@ public class CourseEnrollmentPK implements Serializable {
 		}
 		CourseEnrollmentPK castOther = (CourseEnrollmentPK)other;
 		return 
-			(this.courseId == castOther.courseId)
+			this.courseId.equals(castOther.courseId)
 			&& (this.userId == castOther.userId);
 	}
 
 	public int hashCode() {
 		final int prime = 31;
 		int hash = 17;
-		hash = hash * prime + this.courseId;
+		hash = hash * prime + this.courseId.hashCode();
 		hash = hash * prime + this.userId;
 		
 		return hash;

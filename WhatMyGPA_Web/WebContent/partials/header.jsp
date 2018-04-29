@@ -47,6 +47,13 @@
 			<ul class="navbar-nav ml-auto">
 				<li class="nav-item active"><a class="nav-link" href="Home">Home
 				</a></li>
+				<c:if test="${sessionScope.user.type eq 'user'}">
+					<li class="nav-item"><a class="nav-link" href="Home">Update
+							Profile</a></li>
+					<li class="nav-item"><a class="nav-link" href="Transcript">View
+							Transcript</a></li>
+				</c:if>
+
 				<c:if test="${sessionScope.user.type eq 'admin'}">
 					<li class="nav-item"><a class="nav-link" href="Courses">Courses</a></li>
 				</c:if>
