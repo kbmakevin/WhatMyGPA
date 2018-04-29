@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.whatmygpa.dao.CourseEnrollmentServices;
 import com.whatmygpa.dao.CoursesService;
 import com.whatmygpa.dao.UsersService;
 import com.whatmygpa.models.Users;
@@ -35,6 +36,9 @@ public class HomeServlet extends HttpServlet {
 				request.setAttribute("numberOfCourses", CoursesService.getNumberCourses());
 			}
 		}
+
+		request.getSession().setAttribute("overallGpa",
+				CourseEnrollmentServices.calculateOverallGPA((Users) request.getSession().getAttribute("user")));
 
 		request.getRequestDispatcher("index.jsp").forward(request, response);
 	}

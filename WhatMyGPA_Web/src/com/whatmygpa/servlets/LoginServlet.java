@@ -24,7 +24,7 @@ public class LoginServlet extends HttpServlet {
 		try {
 			// request.getSession().removeAttribute("user");
 			request.getRequestDispatcher("login.jsp").forward(request, response);
-		} catch (ServletException | IOException e) {
+		} catch (IOException e) {
 			response.getWriter().append("500: Server error;\n" + e.getMessage());
 		}
 	}

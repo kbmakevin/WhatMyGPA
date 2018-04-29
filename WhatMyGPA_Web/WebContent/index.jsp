@@ -7,6 +7,10 @@
 		Please login with your username and password, or if this is
 		your first time, please register to proceed with GPA calculations
 	
+	
+	
+	
+	
 	</h3>
 	<hr>
 </div>
@@ -24,14 +28,19 @@
 			<h2>Welcome, ${sessionScope.user.name}!</h2>
 		</div>
 		<div class='row'>
-			<h4>
-				<c:if test="${sessionScope.user.gpa gt 0}">
-			Overall GPA: ${sessionScope.user.gpa }			
-			</c:if>
-				<c:if test="${sessionScope.user.gpa eq 0}">
-					You need to go to Transcript and add your courses to see your GPA!
-				</c:if>
-			</h4>
+			<!-- 			<h4> -->
+			<%-- 				<c:if test="${sessionScope.user.gpa gt 0}"> --%>
+			<h4>Overall GPA: ${sessionScope.overallGpa}</h4>
+		</div>
+
+		<%-- 				</c:if> --%>
+		<%-- 				<c:if test="${sessionScope.user.gpa eq 0}"> --%>
+		<div class='row'>
+
+			You can go to View your Transcript for more details!
+			<!-- 					You need to go to Transcript and add your courses to see your GPA! -->
+			<%-- 				</c:if> --%>
+			<!-- 			</h4> -->
 		</div>
 		<div class='row'>
 			<a class="btn btn-outline-info" href="Transcript">View Transcript</a>

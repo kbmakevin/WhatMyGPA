@@ -7,7 +7,7 @@ CREATE TABLE `what_my_gpa_db`.`courses` (
   `credits` int(11) NOT NULL,
   PRIMARY KEY (`code`),
   UNIQUE KEY `code_UNIQUE` (`code`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
 
 CREATE TABLE `what_my_gpa_db`.`users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -18,13 +18,14 @@ CREATE TABLE `what_my_gpa_db`.`users` (
   `gpa` double DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `username_UNIQUE` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8
 
 CREATE TABLE `what_my_gpa_db`.`course_enrollments` (
-  `course_id` int(11) NOT NULL,
+  `course_id` varchar(45) NOT NULL,
   `user_id` int(11) NOT NULL,
+  `gradeReceived` int(11) NOT NULL,
   `earnedGPA` double NOT NULL,
   PRIMARY KEY (`course_id`,`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
 
 INSERT INTO `what_my_gpa_db`.`users` (`type`, `name`, `username`, `password`) VALUES ('admin', 'admin', 'admin', 'password');
