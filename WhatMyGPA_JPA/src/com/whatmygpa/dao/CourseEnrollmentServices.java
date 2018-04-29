@@ -20,11 +20,19 @@ public class CourseEnrollmentServices {
 	private static EntityTransaction et = em.getTransaction();
 
 	public static List<CourseEnrollment> getAllCourseEnrollmentsWithUser(Users user) {
-		TypedQuery<CourseEnrollment> query = em.createNamedQuery("CourseEnrollment.findSpecific",
+		TypedQuery<CourseEnrollment> query = em.createNamedQuery("CourseEnrollment.findAllForUser",
 				CourseEnrollment.class);
 		query.setParameter("user", user);
 
 		return query.getResultList();
+	}
+
+	public static CourseEnrollment getOneCourseEnrollment(Users user, Courses course) {
+		TypedQuery<CourseEnrollment> query = em.createNamedQuery("CourseEnrollment.findSpecific",
+				CourseEnrollment.class);
+		query.setParameter("user", user);
+		query.setParameter("course", course);
+		return query.getSingleResult();
 	}
 
 	public static void addCourseEnrollment(Users user, Courses course, int gradeReceived) {
@@ -61,6 +69,15 @@ public class CourseEnrollmentServices {
 		} catch (Exception e) {
 			et.rollback();
 		}
+	}
+
+	public static void updateCourseEnrollment(CourseEnrollment ce, int gradeReceived) {
+		et.begin();
+
+		ce.setGradeReceived(gradeReceived);
+		em.persist(ce);
+
+		et.commit();
 	}
 
 	private static double getScale(double percentage) {

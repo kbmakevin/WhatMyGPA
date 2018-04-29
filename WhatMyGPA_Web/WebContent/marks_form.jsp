@@ -3,7 +3,8 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <div class="row">
-	<h1 class="display-4">${requestScope.operationHeader}&nbsp;Course in Transcript</h1>
+	<h1 class="display-4">${requestScope.operationHeader}&nbsp;Course
+		in Transcript</h1>
 </div>
 
 <form action="Transcript" method="post">
@@ -14,10 +15,17 @@
 			<label>Course Code:</label>
 		</div>
 		<div class="col-md-5 ">
-			<select name="code" class="form-control">
-				<c:forEach items="${requestScope.allCourses}" var="course">
-					<option>${course.code }</option>
-				</c:forEach>
+			<select name="code" class="form-control"
+				<c:if test="${requestScope.operationHeader eq 'Update'}">
+										readonly="readonly"</c:if>>
+				<c:if test="${requestScope.operationHeader eq 'Update'}">
+					<option>${requestScope.course.code }</option>
+				</c:if>
+				<c:if test="${requestScope.operationHeader eq 'Add'}">
+					<c:forEach items="${requestScope.allCourses}" var="course">
+						<option>${course.code }</option>
+					</c:forEach>
+				</c:if>
 			</select>
 		</div>
 	</div>
@@ -28,8 +36,11 @@
 			<label>Grade Received:</label>
 		</div>
 		<div class="col-md-5 ">
-			<input type="number" class="form-control" name="gradeReceived" min="0"
-				step='1' placeholder="Enter the grade you received for the course" />
+			<input type="number" class="form-control" name="gradeReceived"
+				min="0" step='1'
+				placeholder="Enter the grade you received for the course"
+				<c:if test="${requestScope.operationHeader eq 'Update'}">
+										value="${requestScope.gradeReceived}"</c:if> />
 		</div>
 	</div>
 

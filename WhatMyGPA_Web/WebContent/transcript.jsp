@@ -40,7 +40,7 @@
 					<tbody>
 						<c:forEach items="${sessionScope.transcriptCourses}" var="course"
 							varStatus="counter">
-							<form action="Courses" method="post">
+							<form action="Transcript" method="post">
 								<input type="hidden" id="courseCode" name="courseCode"
 									value="${course.code}" />
 								<tr>

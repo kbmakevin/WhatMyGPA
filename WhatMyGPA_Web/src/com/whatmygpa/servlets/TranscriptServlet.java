@@ -60,7 +60,50 @@ public class TranscriptServlet extends HttpServlet {
 
 			addCourse(request, response);
 
+		} else if (request.getParameter("showUpdateCourseForm") != null) {
+
+			// show update course form
+			String courseCode = request.getParameter("courseCode").toUpperCase();
+			request.setAttribute("course", CoursesService.getCourse(courseCode));
+			CourseEnrollment ce = CourseEnrollmentServices.getOneCourseEnrollment(
+					(Users) request.getSession().getAttribute("user"), CoursesService.getCourse(courseCode));
+			request.setAttribute("gradeReceived", ce.getGradeReceived());
+			request.setAttribute("operationHeader", "Update");
+			request.getRequestDispatcher("marks_form.jsp").forward(request, response);
+
+		} else if (request.getParameter("updateCourse") != null) {
+
+			updateCourse(request, response);
+
 		}
+
+	}
+
+	protected void updateCourse(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
+		String courseCode = request.getParameter("code").toUpperCase();
+		int gradeReceived = Integer.parseInt(request.getParameter("gradeReceived"));
+
+		// CourseEnrollmentServices.addCourseEnrollment((Users)
+		// request.getSession().getAttribute("user"),
+		// CoursesService.getCourse(courseCode), gradeReceived);
+		//
+		// request.setAttribute("resultMessage", "Course: " + courseCode + " has been
+		// added.");
+		//
+		// // re-populate table with updated data
+		// doGet(request, response);
+
+		// request.setAttribute("course", CoursesService.getCourse(courseCode));
+		CourseEnrollment ce = CourseEnrollmentServices.getOneCourseEnrollment(
+				(Users) request.getSession().getAttribute("user"), CoursesService.getCourse(courseCode));
+		CourseEnrollmentServices.updateCourseEnrollment(ce, gradeReceived);
+
+		// CoursesService.updateCourse(CoursesService.getCourse(request.getParameter("code").toUpperCase()),
+		// Integer.parseInt(request.getParameter("credits")));
+		// re-populate table with updated data
+		doGet(request, response);
 	}
 
 	protected void addCourse(HttpServletRequest request, HttpServletResponse response)
