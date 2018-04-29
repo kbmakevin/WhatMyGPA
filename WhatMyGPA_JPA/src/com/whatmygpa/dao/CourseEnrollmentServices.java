@@ -71,6 +71,15 @@ public class CourseEnrollmentServices {
 		}
 	}
 
+	public static boolean removeCourseEnrollment(Courses course, Users user) {
+		TypedQuery<CourseEnrollment> query = em.createNamedQuery("CourseEnrollment.removeOne", CourseEnrollment.class);
+		et.begin();
+		int deletedCount = query.setParameter("user", user).setParameter("course", course).executeUpdate();
+		em.flush();
+		et.commit();
+		return deletedCount > 0;
+	}
+
 	public static void updateCourseEnrollment(CourseEnrollment ce, int gradeReceived) {
 		et.begin();
 

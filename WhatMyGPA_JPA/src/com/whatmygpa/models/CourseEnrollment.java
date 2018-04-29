@@ -19,7 +19,8 @@ import javax.persistence.Table;
 
 @NamedQueries({ @NamedQuery(name = "CourseEnrollment.findAll", query = "SELECT c FROM CourseEnrollment c"),
 		@NamedQuery(name = "CourseEnrollment.findAllForUser", query = "SELECT c FROM CourseEnrollment c WHERE c.user = :user"),
-		@NamedQuery(name = "CourseEnrollment.findSpecific", query = "SELECT c FROM CourseEnrollment c WHERE c.user = :user AND c.course = :course") })
+		@NamedQuery(name = "CourseEnrollment.findSpecific", query = "SELECT c FROM CourseEnrollment c WHERE c.user = :user AND c.course = :course"),
+		@NamedQuery(name = "CourseEnrollment.removeOne", query = "DELETE FROM CourseEnrollment c WHERE c.user = :user AND c.course = :course") })
 public class CourseEnrollment implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private CourseEnrollmentPK id;

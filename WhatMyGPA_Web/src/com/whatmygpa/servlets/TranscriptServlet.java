@@ -31,13 +31,16 @@ public class TranscriptServlet extends HttpServlet {
 			throws ServletException, IOException {
 
 		// need all courses student took
-		List<Courses> transcriptCourses = new ArrayList();
+		// List<Courses> transcriptCourses = new ArrayList();
+		List<CourseEnrollment> transcriptCourseEnrollments = new ArrayList();
 
 		for (CourseEnrollment courseEnrollment : CourseEnrollmentServices
 				.getAllCourseEnrollmentsWithUser((Users) request.getSession().getAttribute("user"))) {
-			transcriptCourses.add(courseEnrollment.getCourse());
+			// transcriptCourses.add(courseEnrollment.getCourse());
+			transcriptCourseEnrollments.add(courseEnrollment);
 		}
-		request.getSession().setAttribute("transcriptCourses", transcriptCourses);
+		request.getSession().setAttribute("transcriptCourseEnrollments", transcriptCourseEnrollments);
+		// request.getSession().setAttribute("transcriptCourses", transcriptCourses);
 
 		request.getRequestDispatcher("transcript.jsp").forward(request, response);
 	}
@@ -52,7 +55,44 @@ public class TranscriptServlet extends HttpServlet {
 		if (request.getParameter("showAddCourseForm") != null) {
 
 			// show add course form
-			request.setAttribute("allCourses", CoursesService.getAllCourses());
+			// shouldn't show courses user already has on transcript as an option to add it
+			// again
+
+			// full list
+			List<Courses> allCourses = CoursesService.getAllCourses();
+			List<Courses> transcriptCourseEnrollments = new ArrayList();
+
+			// filter out the ones the user is enrolled in
+			boolean matchFound;
+			for (Courses c : allCourses) {
+				matchFound = false;
+				for (CourseEnrollment courseEnrollment : CourseEnrollmentServices
+						.getAllCourseEnrollmentsWithUser((Users) request.getSession().getAttribute("user"))) {
+					// transcriptCourseEnrollments.remove(courseEnrollment.getCourse());
+					// if (!(allCourses.contains(courseEnrollment.getCourse()))) {
+					// transcriptCourseEnrollments.add(courseEnrollment.getCourse());
+					// }
+					if (c.getCode().equalsIgnoreCase(courseEnrollment.getCourse().getCode())) {
+						matchFound = true;
+					}
+				}
+				if (!matchFound) {
+					transcriptCourseEnrollments.add(c);
+				}
+				// allCourses.stream()
+				// .filter(course ->
+				// !course.getCode().equalsIgnoreCase(courseEnrollment.getCourse().getCode()))
+				// .collect(Collectors.toList());
+			}
+
+			// allCourses.removeAll(CourseEnrollmentServices
+			// .getAllCourseEnrollmentsWithUser((Users)
+			// request.getSession().getAttribute("user")));
+
+			// request.setAttribute("allCourses", allCourses);
+			request.setAttribute("allCourses", transcriptCourseEnrollments);
+
+			// request.setAttribute("allCourses", CoursesService.getAllCourses());
 			request.setAttribute("operationHeader", "Add");
 			request.getRequestDispatcher("marks_form.jsp").forward(request, response);
 
@@ -75,8 +115,27 @@ public class TranscriptServlet extends HttpServlet {
 
 			updateCourse(request, response);
 
+		} else if (request.getParameter("removeCourse") != null) {
+
+			// delete a course
+			deleteCourse(request, response);
+
 		}
 
+	}
+
+	protected void deleteCourse(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		String courseCode = request.getParameter("code").toUpperCase();
+		CourseEnrollment ce = CourseEnrollmentServices.getOneCourseEnrollment(
+				(Users) request.getSession().getAttribute("user"), CoursesService.getCourse(courseCode));
+
+		if (CourseEnrollmentServices.removeCourseEnrollment(CoursesService.getCourse(courseCode),
+				(Users) request.getSession().getAttribute("user"))) {
+			request.setAttribute("resultMessage", "Course: " + courseCode + " has been deleted.");
+		} else {
+			request.setAttribute("resultMessage", "Failed to delete Course: " + courseCode + ".");
+		}
 	}
 
 	protected void updateCourse(HttpServletRequest request, HttpServletResponse response)
@@ -84,24 +143,9 @@ public class TranscriptServlet extends HttpServlet {
 
 		String courseCode = request.getParameter("code").toUpperCase();
 		int gradeReceived = Integer.parseInt(request.getParameter("gradeReceived"));
-
-		// CourseEnrollmentServices.addCourseEnrollment((Users)
-		// request.getSession().getAttribute("user"),
-		// CoursesService.getCourse(courseCode), gradeReceived);
-		//
-		// request.setAttribute("resultMessage", "Course: " + courseCode + " has been
-		// added.");
-		//
-		// // re-populate table with updated data
-		// doGet(request, response);
-
-		// request.setAttribute("course", CoursesService.getCourse(courseCode));
 		CourseEnrollment ce = CourseEnrollmentServices.getOneCourseEnrollment(
 				(Users) request.getSession().getAttribute("user"), CoursesService.getCourse(courseCode));
 		CourseEnrollmentServices.updateCourseEnrollment(ce, gradeReceived);
-
-		// CoursesService.updateCourse(CoursesService.getCourse(request.getParameter("code").toUpperCase()),
-		// Integer.parseInt(request.getParameter("credits")));
 		// re-populate table with updated data
 		doGet(request, response);
 	}

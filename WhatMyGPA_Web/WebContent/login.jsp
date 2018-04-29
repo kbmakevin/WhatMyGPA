@@ -1,4 +1,5 @@
-	<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <jsp:include page="./partials/header.jsp" />
 <div class="col-md-6">
 	<h3>Login</h3>
@@ -12,12 +13,13 @@
 				type="password" name="password" />
 		</div>
 		<c:if test="${ not empty error }">
-		<div class="alert alert-danger">
-			<c:out value="${ error }"></c:out>
-		</div>
-		</c:if> 
+			<div class="alert alert-danger">
+				<c:out value="${ error }"></c:out>
+			</div>
+		</c:if>
 		<div class="form-group">
-			<input class="btn btn-primary" type="submit" value="Login" />
+			<input class="btn btn-primary" type="submit" value="Login" /> <a
+				href="Home" class="btn btn-danger">Cancel</a>
 		</div>
 	</form>
 </div>

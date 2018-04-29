@@ -29,8 +29,9 @@
 			<label>Number of Credits:</label>
 		</div>
 		<div class="col-md-5 ">
-			<input type="number" class="form-control" name="credits" min="3"
-				step='1' placeholder="Enter an integer for the number of credits"
+			<input type="number" class="form-control" name="credits" min="2"
+				max='4' step='1'
+				placeholder="Enter an integer for the number of credits"
 				<c:if test="${requestScope.operationHeader eq 'Update'}">
 										value="${requestScope.course.credits}"</c:if> />
 		</div>

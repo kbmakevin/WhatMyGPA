@@ -37,7 +37,7 @@
 		</div>
 		<div class="col-md-5 ">
 			<input type="number" class="form-control" name="gradeReceived"
-				min="0" step='1'
+				min="0" step='1' max='100'
 				placeholder="Enter the grade you received for the course"
 				<c:if test="${requestScope.operationHeader eq 'Update'}">
 										value="${requestScope.gradeReceived}"</c:if> />

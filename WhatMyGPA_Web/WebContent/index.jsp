@@ -1,11 +1,14 @@
 <%@ include file="./partials/header.jsp"%>
 <div class='row'>
 	<h1 class="display-1">What My GPA</h1>
-	<h3>This simple but very useful app will help you to calculate
-		your GPA. Please login with your username and password, or if this is
-		your first time, please register to proceed with GPA calculations</h3>
+	<h3>
+		This simple but very useful app will help you to calculate your GPA.
+		<c:if test="${empty sessionScope.user }">
+		Please login with your username and password, or if this is
+		your first time, please register to proceed with GPA calculations
+	
+	</h3>
 	<hr>
-	<c:if test="${empty sessionScope.user }">
 </div>
 <div class='row'>
 	<a class="btn btn-outline-primary" href="Login">Login</a> <a
@@ -14,6 +17,7 @@
 </div>
 <!-- if logged in -->
 <c:if test="${not empty sessionScope.user }">
+	<hr>
 	<!-- if user -->
 	<c:if test="${sessionScope.user.type eq 'user'}">
 		<div class='row'>

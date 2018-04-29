@@ -38,16 +38,21 @@
 						</tr>
 					</thead>
 					<tbody>
-						<c:forEach items="${sessionScope.transcriptCourses}" var="course"
-							varStatus="counter">
+						<%-- <c:forEach items="${sessionScope.transcriptCourses}" var="course" --%>
+						<c:forEach items="${sessionScope.transcriptCourseEnrollments}"
+							var="courseEnrollment" varStatus="counter">
 							<form action="Transcript" method="post">
 								<input type="hidden" id="courseCode" name="courseCode"
-									value="${course.code}" />
+									value="${courseEnrollment.course.code}" />
+								<!-- 								<input type="hidden" id="courseCode" name="courseCode" -->
+								<%-- 									value="${course.code}" /> --%>
 								<tr>
-									<td scope="row">${fn:toUpperCase(course.code)}</td>
-									<td scope="row">${course.credits}</td>
+									<%-- 									<td scope="row">${fn:toUpperCase(course.code)}</td> --%>
+									<%-- 									<td scope="row">${course.credits}</td> --%>
+									<td scope="row">${fn:toUpperCase(courseEnrollment.course.code)}</td>
+									<td scope="row">${courseEnrollment.course.credits}</td>
 									<%-- 									<td scope="row">${(course.courseEnrollments).id}</td> --%>
-									<%-- 									<td scope="row">${course.courseEnrollments.gradeReceived}</td> --%>
+									<td scope="row">${courseEnrollment.gradeReceived}%</td>
 									<td><input type="submit" class="btn btn-info"
 										name="showUpdateCourseForm" value="Update" /> <input
 										type="submit" class="btn btn-danger" name="removeCourse"
