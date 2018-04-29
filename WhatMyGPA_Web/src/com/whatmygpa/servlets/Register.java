@@ -13,28 +13,25 @@ import com.whatmygpa.dao.UsersService;
 
 @WebServlet("/Register")
 public class Register extends HttpServlet {
-	/**
-	 * 
-	 */
-	public Register() {
-		super();
-	}
-	private static final long serialVersionUID = -3734815044129867359L;
+	private static final long serialVersionUID = 1L;
 
 	@Override
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		try {
 			request.getRequestDispatcher("register.jsp").forward(request, response);
 		} catch (ServletException e) {
-			
+
 		} catch (IOException e) {
-			
+
 		}
 	}
 
 	@Override
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		String name = request.getParameter("fName") + " " + request.getParameter("lName");
+		String username = request.getParameter("username");
 		String password = request.getParameter("password");
 		String confirmPassword = request.getParameter("confirmPassword");
 		if (!password.equals(confirmPassword)) {
@@ -42,10 +39,10 @@ public class Register extends HttpServlet {
 			doGet(request, response);
 			return;
 		}
-		
+
 		try {
-			UsersService.registerUsers(name,request.getParameter("username"), password);
-			//request.getSession().setAttribute("user", user);
+			UsersService.registerUsers(name, username, password);
+			// request.getSession().setAttribute("user", user);
 			request.getRequestDispatcher("home.jsp").forward(request, response);
 		} catch (ServletException | IOException e) {
 		} catch (PersistenceException e) {

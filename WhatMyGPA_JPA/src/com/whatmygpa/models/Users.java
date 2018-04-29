@@ -20,10 +20,8 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "users")
-@NamedQueries({
-@NamedQuery(name = "Users.findAll", query = "SELECT u FROM Users u"),
-@NamedQuery(name = "Users.authenticate", query="SELECT u FROM Users u WHERE u.username = :username and u.password = :password")
-})
+@NamedQueries({ @NamedQuery(name = "Users.findAll", query = "SELECT u FROM Users u"),
+		@NamedQuery(name = "Users.authenticate", query = "SELECT u FROM Users u WHERE u.username = :username and u.password = :password") })
 public class Users implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private int id;
@@ -38,7 +36,7 @@ public class Users implements Serializable {
 	}
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public int getId() {
 		return this.id;
 	}

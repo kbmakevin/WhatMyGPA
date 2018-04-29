@@ -15,10 +15,10 @@ CREATE TABLE `what_my_gpa_db`.`users` (
   `name` varchar(45) NOT NULL,
   `username` varchar(45) NOT NULL,
   `password` varchar(45) NOT NULL,
-  `gpa` double DEFAULT NULL,
+  `gpa` double DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `username_UNIQUE` (`username`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `what_my_gpa_db`.`course_enrollments` (
   `course_id` int(11) NOT NULL,

@@ -2,7 +2,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
-<div class="container wrapper" style="margin-top: 65px">
 	<div class="row">
 		<h1 class="display-4">${requestScope.operationHeader}&nbsp;Course</h1>
 	</div>
@@ -49,6 +48,5 @@
 	</form>
 
 
-</div>
 
 <%@ include file="./partials/footer.jsp"%>

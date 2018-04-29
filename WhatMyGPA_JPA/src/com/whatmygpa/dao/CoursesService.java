@@ -35,9 +35,17 @@ public class CoursesService {
 		Courses newCourse = new Courses();
 		newCourse.setCode(courseCode);
 		newCourse.setCredits(credits);
+		// et.begin();
+		// em.persist(newCourse);
+		// et.commit();
 		et.begin();
-		em.persist(newCourse);
-		et.commit();
+		try {
+			em.persist(newCourse);
+			em.flush();
+			et.commit();
+		} catch (Exception e) {
+			et.rollback();
+		}
 	}
 
 	public static boolean removeOneCourse(String courseCode) {
