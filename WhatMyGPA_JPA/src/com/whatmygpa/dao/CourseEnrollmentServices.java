@@ -74,6 +74,11 @@ public class CourseEnrollmentServices {
 	public static boolean removeCourseEnrollment(Courses course, Users user) {
 		TypedQuery<CourseEnrollment> query = em.createNamedQuery("CourseEnrollment.removeOne", CourseEnrollment.class);
 		et.begin();
+
+		CourseEnrollment ce = getOneCourseEnrollment(user, course);
+		user.removeCourseEnrollment(ce);
+		course.removeCourseEnrollment(ce);
+
 		int deletedCount = query.setParameter("user", user).setParameter("course", course).executeUpdate();
 		em.flush();
 		et.commit();

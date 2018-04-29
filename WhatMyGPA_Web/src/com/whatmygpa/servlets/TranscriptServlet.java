@@ -68,10 +68,6 @@ public class TranscriptServlet extends HttpServlet {
 				matchFound = false;
 				for (CourseEnrollment courseEnrollment : CourseEnrollmentServices
 						.getAllCourseEnrollmentsWithUser((Users) request.getSession().getAttribute("user"))) {
-					// transcriptCourseEnrollments.remove(courseEnrollment.getCourse());
-					// if (!(allCourses.contains(courseEnrollment.getCourse()))) {
-					// transcriptCourseEnrollments.add(courseEnrollment.getCourse());
-					// }
 					if (c.getCode().equalsIgnoreCase(courseEnrollment.getCourse().getCode())) {
 						matchFound = true;
 					}
@@ -79,20 +75,9 @@ public class TranscriptServlet extends HttpServlet {
 				if (!matchFound) {
 					transcriptCourseEnrollments.add(c);
 				}
-				// allCourses.stream()
-				// .filter(course ->
-				// !course.getCode().equalsIgnoreCase(courseEnrollment.getCourse().getCode()))
-				// .collect(Collectors.toList());
 			}
-
-			// allCourses.removeAll(CourseEnrollmentServices
-			// .getAllCourseEnrollmentsWithUser((Users)
-			// request.getSession().getAttribute("user")));
-
-			// request.setAttribute("allCourses", allCourses);
 			request.setAttribute("allCourses", transcriptCourseEnrollments);
 
-			// request.setAttribute("allCourses", CoursesService.getAllCourses());
 			request.setAttribute("operationHeader", "Add");
 			request.getRequestDispatcher("marks_form.jsp").forward(request, response);
 
@@ -126,7 +111,7 @@ public class TranscriptServlet extends HttpServlet {
 
 	protected void deleteCourse(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		String courseCode = request.getParameter("code").toUpperCase();
+		String courseCode = request.getParameter("courseCode").toUpperCase();
 		CourseEnrollment ce = CourseEnrollmentServices.getOneCourseEnrollment(
 				(Users) request.getSession().getAttribute("user"), CoursesService.getCourse(courseCode));
 
@@ -136,6 +121,8 @@ public class TranscriptServlet extends HttpServlet {
 		} else {
 			request.setAttribute("resultMessage", "Failed to delete Course: " + courseCode + ".");
 		}
+		// re-populate table with updated data
+		doGet(request, response);
 	}
 
 	protected void updateCourse(HttpServletRequest request, HttpServletResponse response)
