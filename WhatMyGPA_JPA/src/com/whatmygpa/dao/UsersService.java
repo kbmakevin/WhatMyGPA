@@ -6,7 +6,7 @@ import javax.persistence.Persistence;
 import javax.persistence.PersistenceException;
 import javax.persistence.TypedQuery;
 
-import com.whatmygpa.models.Users;
+import com.whatmygpa.models.User;
 
 public class UsersService {
 	// PERSISTENCE_UNIT_NAME is the name recorded in the persistence.xml file
@@ -16,13 +16,13 @@ public class UsersService {
 	private static EntityTransaction et = em.getTransaction();
 
 	public static int getNumberUsers() {
-		TypedQuery<Users> query = em.createNamedQuery("Users.findAll", Users.class);
+		TypedQuery<User> query = em.createNamedQuery("User.findAll", User.class);
 		return query.getResultList().size();
 	}
 
-	public static Users authenticateUsers(String username, String password) {
+	public static User authenticateUsers(String username, String password) {
 		try {
-			return em.createNamedQuery("Users.authenticate", Users.class).setParameter("username", username)
+			return em.createNamedQuery("Users.authenticate", User.class).setParameter("username", username)
 					.setParameter("password", password).getSingleResult();
 		} catch (Exception e) {
 			return null;
@@ -31,7 +31,7 @@ public class UsersService {
 	}
 
 	public static void registerUsers(String name, String username, String password) {
-		Users user = new Users();
+		User user = new User();
 		user.setName(name);
 		user.setUsername(username);
 		user.setPassword(password);

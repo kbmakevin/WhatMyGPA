@@ -7,7 +7,7 @@
 		name="WhatMyGPA_JPA"
 		transaction-type="RESOURCE_LOCAL">
 		<non-jta-data-source>java:/jndi/WhatMyGPA_DS</non-jta-data-source>
-		<class>com.whatmygpa.models.Courses</class>
-		<class>com.whatmygpa.models.Users</class>
+		<class>com.whatmygpa.models.Course</class>
+		<class>com.whatmygpa.models.User</class>
 	</persistence-unit>
 </persistence>

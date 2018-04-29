@@ -8,7 +8,7 @@ import javax.persistence.Persistence;
 import javax.persistence.RollbackException;
 import javax.persistence.TypedQuery;
 
-import com.whatmygpa.models.Courses;
+import com.whatmygpa.models.Course;
 
 public class CoursesService {
 	// PERSISTENCE_UNIT_NAME is the name recorded in the persistence.xml file
@@ -21,26 +21,26 @@ public class CoursesService {
 		return getAllCourses().size();
 	}
 
-	public static List<Courses> getAllCourses() {
-		TypedQuery<Courses> query = em.createNamedQuery("Courses.findAll", Courses.class);
+	public static List<Course> getAllCourses() {
+		TypedQuery<Course> query = em.createNamedQuery("Course.findAll", Course.class);
 		return getQueryResults(query);
 	}
 
-	public static Courses getCourse(String courseCode) {
-		TypedQuery<Courses> query = em.createNamedQuery("Courses.findOne", Courses.class);
+	public static Course getCourse(String courseCode) {
+		TypedQuery<Course> query = em.createNamedQuery("Course.findOne", Course.class);
 		query.setParameter("code", courseCode);
-		List<Courses> result = getQueryResults(query);
+		List<Course> result = getQueryResults(query);
 		if (result == null) {
 			return null;
 		}
 		return result.get(0);
 	}
 
-	public static void updateCourse(Courses c, int credits) {
+	public static void updateCourse(Course c, int credits) {
 
 		try {
 			et.begin();
-			Courses updatedCourse = getCourse(c.getCode());
+			Course updatedCourse = getCourse(c.getCode());
 			updatedCourse.setCredits(credits);
 			em.persist(updatedCourse);
 			// automatic rollback on SQL Exception
@@ -52,7 +52,7 @@ public class CoursesService {
 	}
 
 	public static void addCourse(String courseCode, int credits) {
-		Courses newCourse = new Courses();
+		Course newCourse = new Course();
 		newCourse.setCode(courseCode);
 		newCourse.setCredits(credits);
 		et.begin();
@@ -66,7 +66,7 @@ public class CoursesService {
 	}
 
 	public static boolean removeOneCourse(String courseCode) {
-		TypedQuery<Courses> query = em.createNamedQuery("Courses.removeOne", Courses.class);
+		TypedQuery<Course> query = em.createNamedQuery("Courses.removeOne", Course.class);
 		et.begin();
 		int deletedCount = query.setParameter("code", courseCode).executeUpdate();
 		em.flush();
@@ -75,8 +75,8 @@ public class CoursesService {
 	}
 
 	// Helper functions
-	private static List<Courses> getQueryResults(TypedQuery<Courses> query) {
-		List<Courses> courseList = query.getResultList();
+	private static List<Course> getQueryResults(TypedQuery<Course> query) {
+		List<Course> courseList = query.getResultList();
 		if (courseList != null && courseList.size() > 0) {
 			return courseList;
 		} else {

@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.whatmygpa.dao.CoursesService;
+import com.whatmygpa.models.Course;
 
 /**
  * Servlet implementation class Courses
@@ -27,7 +28,7 @@ public class CoursesServlet extends HttpServlet {
 			throws ServletException, IOException {
 
 		HttpSession session = request.getSession();
-		List<com.whatmygpa.models.Courses> coursesQueryResults = CoursesService.getAllCourses();
+		List<Course> coursesQueryResults = CoursesService.getAllCourses();
 		session.setAttribute("courses", coursesQueryResults);
 		request.getRequestDispatcher("courses_list.jsp").forward(request, response);
 	}

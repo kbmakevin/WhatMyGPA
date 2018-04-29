@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.whatmygpa.dao.CoursesService;
 import com.whatmygpa.dao.UsersService;
-import com.whatmygpa.models.Users;
+import com.whatmygpa.models.User;
 
 /**
  * Servlet implementation class HomeServlet
@@ -28,7 +28,7 @@ public class HomeServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 
 		if (request.getSession().getAttribute("user") != null) {
-			Users authenticatedUser = (Users) request.getSession().getAttribute("user");
+			User authenticatedUser = (User) request.getSession().getAttribute("user");
 
 			if (authenticatedUser.getType().equalsIgnoreCase("admin")) {
 				request.setAttribute("numberOfUsers", UsersService.getNumberUsers());

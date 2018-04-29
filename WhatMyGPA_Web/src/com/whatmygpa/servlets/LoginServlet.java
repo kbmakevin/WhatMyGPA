@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.whatmygpa.dao.UsersService;
-import com.whatmygpa.models.Users;
+import com.whatmygpa.models.User;
 
 /**
  * Servlet implementation class Login
@@ -31,7 +31,7 @@ public class LoginServlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		Users authenticatedUser = UsersService.authenticateUsers(request.getParameter("username"),
+		User authenticatedUser = UsersService.authenticateUsers(request.getParameter("username"),
 				request.getParameter("password"));
 		if (authenticatedUser != null) {
 			request.getSession().setAttribute("user", authenticatedUser);
