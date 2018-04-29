@@ -7,11 +7,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -30,7 +28,7 @@ public class Users implements Serializable {
 	private String password;
 	private String type;
 	private String username;
-	private List<Courses> courses;
+	private List<CourseEnrollment> courseEnrollments;
 
 	public Users() {
 	}
@@ -85,16 +83,28 @@ public class Users implements Serializable {
 		this.username = username;
 	}
 
-	// bi-directional many-to-many association to Cours
-	@ManyToMany
-	@JoinTable(name = "course_enrollments", joinColumns = { @JoinColumn(name = "user_id") }, inverseJoinColumns = {
-			@JoinColumn(name = "course_id") })
-	public List<Courses> getCourses() {
-		return this.courses;
+	// bi-directional many-to-one association to CourseEnrollment
+	@OneToMany(mappedBy = "user")
+	public List<CourseEnrollment> getCourseEnrollments() {
+		return this.courseEnrollments;
 	}
 
-	public void setCourses(List<Courses> courses) {
-		this.courses = courses;
+	public void setCourseEnrollments(List<CourseEnrollment> courseEnrollments) {
+		this.courseEnrollments = courseEnrollments;
+	}
+
+	public CourseEnrollment addCourseEnrollment(CourseEnrollment courseEnrollment) {
+		getCourseEnrollments().add(courseEnrollment);
+		courseEnrollment.setUser(this);
+
+		return courseEnrollment;
+	}
+
+	public CourseEnrollment removeCourseEnrollment(CourseEnrollment courseEnrollment) {
+		getCourseEnrollments().remove(courseEnrollment);
+		courseEnrollment.setUser(null);
+
+		return courseEnrollment;
 	}
 
 }

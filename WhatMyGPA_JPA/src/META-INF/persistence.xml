@@ -9,5 +9,7 @@
 		<non-jta-data-source>java:/jndi/WhatMyGPA_DS</non-jta-data-source>
 		<class>com.whatmygpa.models.Courses</class>
 		<class>com.whatmygpa.models.Users</class>
+		<class>com.whatmygpa.models.CourseEnrollment</class>
+		<class>com.whatmygpa.models.CourseEnrollmentPK</class>
 	</persistence-unit>
 </persistence>

@@ -43,17 +43,17 @@
 							<form action="Courses" method="post">
 								<input type="hidden" id="courseCode" name="courseCode"
 									value="${course.code}" />
-							<tr>
-								<td scope="row">${fn:toUpperCase(course.code)}</td>
-								<td scope="row">${course.credits}</td>
-								<td scope="row">${course.users.size()}</td>
-								<td><input type="submit" class="btn btn-info"
-									name="showUpdateCourseForm" value="Update" /> <input
-									type="submit" class="btn btn-danger" name="removeCourse"
-									value="Remove"
-									<c:if test="${course.users.size() gt 0}">
+								<tr>
+									<td scope="row">${fn:toUpperCase(course.code)}</td>
+									<td scope="row">${course.credits}</td>
+									<td scope="row">${course.courseEnrollments.size()}</td>
+									<td><input type="submit" class="btn btn-info"
+										name="showUpdateCourseForm" value="Update" /> <input
+										type="submit" class="btn btn-danger" name="removeCourse"
+										value="Remove"
+										<c:if test="${course.courseEnrollments.size() gt 0}">
 										disabled="true"</c:if> /></td>
-							</tr>
+								</tr>
 							</form>
 						</c:forEach>
 					</tbody>
