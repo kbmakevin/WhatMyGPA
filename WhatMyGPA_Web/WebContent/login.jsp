@@ -1,8 +1,8 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+	<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <jsp:include page="./partials/header.jsp" />
 <div class="col-md-6">
 	<h3>Login</h3>
-	<form action="/Login" method="POST">
+	<form action="Login" method="POST">
 		<div class="form-group">
 			<label for="username">Username</label> <input class="form-control"
 				type="text" name="username" />

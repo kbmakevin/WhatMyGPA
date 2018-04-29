@@ -2,7 +2,7 @@
 <jsp:include page="./partials/header.jsp" />
 	<div>
 		<h3>Create an account</h3>
-		<form action="/Auth/Register" method="POST">
+		<form action="Register" method="POST">
 			<div class="form-group">
 				<label class="label">First Name</label>
 				<input class="form-control" type="text" placeholder="Mike" name="fName" id="fName" required />
@@ -33,5 +33,4 @@
 			</div>
 		</form>
 	</div>
-
 <jsp:include page="./partials/footer.jsp" />

@@ -25,8 +25,12 @@ public class UsersService {
 			
 		}
 		
-		public static void registerUsers(Users user) {
+		public static void registerUsers(String name, String username, String password) {
 			EntityTransaction et = em.getTransaction();
+			Users user = new Users();
+			user.setName(name);
+			user.setUsername(username);
+			user.setPassword(password);
 			try {
 				et.begin();
 				em.persist(user);

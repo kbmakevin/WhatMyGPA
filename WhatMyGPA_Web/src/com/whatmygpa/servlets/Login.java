@@ -17,6 +17,9 @@ import com.whatmygpa.models.Users;
 public class Login extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * @see HttpServlet#HttpServlet()
+	 */
 	public Login() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -44,5 +47,4 @@ public class Login extends HttpServlet {
 			doGet(request, response);
 		}
 	}
-
 }
