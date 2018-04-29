@@ -42,9 +42,9 @@ public class RegisterServlet extends HttpServlet {
 
 		try {
 			UsersService.registerUsers(name, username, password);
-			// request.getSession().setAttribute("user", user);
-			request.getRequestDispatcher("home.jsp").forward(request, response);
-		} catch (ServletException | IOException e) {
+			request.getSession().setAttribute("user", UsersService.authenticateUsers(username, password));
+			response.sendRedirect(request.getContextPath() + "/Home");
+		} catch (IOException e) {
 		} catch (PersistenceException e) {
 			request.setAttribute("error", "Username already exists.");
 			doGet(request, response);

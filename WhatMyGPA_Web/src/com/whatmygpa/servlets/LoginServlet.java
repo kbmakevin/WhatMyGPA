@@ -22,6 +22,7 @@ public class LoginServlet extends HttpServlet {
 			throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		try {
+			// request.getSession().removeAttribute("user");
 			request.getRequestDispatcher("login.jsp").forward(request, response);
 		} catch (ServletException | IOException e) {
 			response.getWriter().append("500: Server error;\n" + e.getMessage());
@@ -30,10 +31,11 @@ public class LoginServlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		Users user = UsersService.authenticateUsers(request.getParameter("username"), request.getParameter("password"));
-		if (user != null) {
-			request.getSession().setAttribute("user", user);
-			request.getRequestDispatcher("home.jsp").forward(request, response);
+		Users authenticatedUser = UsersService.authenticateUsers(request.getParameter("username"),
+				request.getParameter("password"));
+		if (authenticatedUser != null) {
+			request.getSession().setAttribute("user", authenticatedUser);
+			response.sendRedirect(request.getContextPath() + "/Home");
 
 		} else {
 			request.setAttribute("error", "Invalid login. Please try again.");

@@ -17,6 +17,10 @@ public class CoursesService {
 			.createEntityManager();
 	private static EntityTransaction et = em.getTransaction();
 
+	public static int getNumberCourses() {
+		return getAllCourses().size();
+	}
+
 	public static List<Courses> getAllCourses() {
 		TypedQuery<Courses> query = em.createNamedQuery("Courses.findAll", Courses.class);
 		return getQueryResults(query);

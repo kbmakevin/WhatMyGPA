@@ -4,6 +4,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import javax.persistence.PersistenceException;
+import javax.persistence.TypedQuery;
 
 import com.whatmygpa.models.Users;
 
@@ -13,6 +14,11 @@ public class UsersService {
 	private static EntityManager em = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME)
 			.createEntityManager();
 	private static EntityTransaction et = em.getTransaction();
+
+	public static int getNumberUsers() {
+		TypedQuery<Users> query = em.createNamedQuery("Users.findAll", Users.class);
+		return query.getResultList().size();
+	}
 
 	public static Users authenticateUsers(String username, String password) {
 		try {

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="en">
@@ -29,10 +30,14 @@
 <body>
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
 	<div class="container">
-		<a class="navbar-brand" href=""> <img src="./img/logo.png"
+		<a class="navbar-brand" href="Home"> <img src="./img/logo.png"
 			class="pull-left" style="height: 5vh;" alt="Logo of the Online Store">
 			What My GPA
 		</a>
+		<c:if test="${not empty sessionScope.user }">
+			<span class='text-white'> | Logged in as
+				${sessionScope.user.name } (${sessionScope.user.type}) </span>
+		</c:if>
 		<button class="navbar-toggler" type="button" data-toggle="collapse"
 			data-target="#navbarResponsive" aria-controls="navbarResponsive"
 			aria-expanded="false" aria-label="Toggle navigation">
@@ -40,12 +45,17 @@
 		</button>
 		<div class="collapse navbar-collapse" id="navbarResponsive">
 			<ul class="navbar-nav ml-auto">
-				<li class="nav-item active"><a class="nav-link" href="">Home
+				<li class="nav-item active"><a class="nav-link" href="Home">Home
 				</a></li>
-				<li class="nav-item"><a class="nav-link" href="Products">Products</a>
-				</li>
-				<li class="nav-item"><a class="nav-link" href="ShoppingCart">Shopping
-						Cart</a></li>
+				<c:if test="${sessionScope.user.type eq 'admin'}">
+					<li class="nav-item"><a class="nav-link" href="Courses">Courses</a></li>
+				</c:if>
+				<c:if test="${not empty sessionScope.user }">
+					<li class="nav-item"><a class="nav-link" href="Logout">Logout</a></li>
+				</c:if>
+				<c:if test="${empty sessionScope.user }">
+					<li class="nav-item"><a class="nav-link" href="Login">Login</a></li>
+				</c:if>
 			</ul>
 		</div>
 	</div>
