@@ -5,6 +5,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
+import javax.persistence.RollbackException;
 import javax.persistence.TypedQuery;
 
 import com.whatmygpa.models.Courses;
@@ -31,13 +32,25 @@ public class CoursesService {
 		return result.get(0);
 	}
 
+	public static void updateCourse(Courses c, int credits) {
+
+		try {
+			et.begin();
+			Courses updatedCourse = getCourse(c.getCode());
+			updatedCourse.setCredits(credits);
+			em.persist(updatedCourse);
+			// automatic rollback on SQL Exception
+			et.commit();
+		} catch (RollbackException re) {
+			re.printStackTrace(System.err);
+		}
+
+	}
+
 	public static void addCourse(String courseCode, int credits) {
 		Courses newCourse = new Courses();
 		newCourse.setCode(courseCode);
 		newCourse.setCredits(credits);
-		// et.begin();
-		// em.persist(newCourse);
-		// et.commit();
 		et.begin();
 		try {
 			em.persist(newCourse);

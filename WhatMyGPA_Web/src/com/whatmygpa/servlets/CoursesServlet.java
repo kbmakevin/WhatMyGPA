@@ -16,7 +16,7 @@ import com.whatmygpa.dao.CoursesService;
  * Servlet implementation class Courses
  */
 @WebServlet("/Courses")
-public class Courses extends HttpServlet {
+public class CoursesServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -48,6 +48,8 @@ public class Courses extends HttpServlet {
 		} else if (request.getParameter("showUpdateCourseForm") != null) {
 
 			// show update course form
+			String courseCode = request.getParameter("courseCode").toUpperCase();
+			request.setAttribute("course", CoursesService.getCourse(courseCode));
 			request.setAttribute("operationHeader", "Update");
 			request.getRequestDispatcher("courses_form.jsp").forward(request, response);
 
@@ -86,8 +88,10 @@ public class Courses extends HttpServlet {
 	protected void updateCourse(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		request.setAttribute("resultMessage", "Updated");
-		request.getRequestDispatcher("courses_list.jsp").forward(request, response);
+		CoursesService.updateCourse(CoursesService.getCourse(request.getParameter("code").toUpperCase()),
+				Integer.parseInt(request.getParameter("credits")));
+		// re-populate table with updated data
+		doGet(request, response);
 	}
 
 	protected void deleteCourse(HttpServletRequest request, HttpServletResponse response)

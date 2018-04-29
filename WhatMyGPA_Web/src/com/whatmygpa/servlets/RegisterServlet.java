@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.whatmygpa.dao.UsersService;
 
 @WebServlet("/Register")
-public class Register extends HttpServlet {
+public class RegisterServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	@Override
